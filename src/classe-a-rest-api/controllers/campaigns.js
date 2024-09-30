@@ -1,165 +1,113 @@
-import express from 'express';
+import { getFirestore } from 'firebase-admin/firestore';
+import Campaign from '../models/Campaign.js';
 
-import verifyToken from '../middleware.js';
-import CampaignController from '../controllers/campaigns.js';
+const db = getFirestore();
+const campaignColl = db.collection('campaigns');
 
-/**
- * @swagger
- * components:
- *   schemas:
- *     campaign:
- *       type: object
- *       required:
- *         - id
- *         - clientId
- *         - title
- *         - budget
- *       properties:
- *         id:
- *           type: string
- *           description: The auto-generated id of the campaign
- *         clientId:
- *           type: string
- *           description: The clients Id who the campaign belongs to
- *         title:
- *           type: string
- *           description: The title of the campaign
- *         budget:
- *           type: string
- *           description: the budget  of the campaign
- *         postCreativeId:
- *           type: string
- *           description: the creative media of the current campaign 
- *       example:
- *         id: qw464qwd4q5wd4654d465qw
- *         clientId: q5w4d4qd6w4q6wd465qdw
- *         title: New Campaign
- *         budget: 500
- *         postCreativeId: wq1d65qw1d651qwd61dw
- */
+export default {
+  addCampaign: async (req, res) => {
+    const { body: payload } = req;
 
- /**
- * @swagger
- * tags:
- *   name: Campaigns
- *   description: The campaigns controller of the API
- * paths:
- *   /campaigns:
- *     get:
- *       security:
- *         - cookieAuth: []
- *       summary: Lists all the campaigns
- *       tags: [Campaigns]
- *       responses:
- *         200:
- *           description: The list of the campaigns
- *           content:
- *             application/json:
- *               schema:
- *                 type: array
- *                 items:
- *                   $ref: '#/components/schemas/campaign'
- *     post:
- *       security:
- *         - cookieAuth: []
- *       summary: Create a new campaign
- *       tags: [Campaigns]
- *       requestBody:
- *         required: true
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/campaign'
- *       responses:
- *         200:
- *           description: The created campaign.
- *           content:
- *             application/json:
- *               schema:
- *                 $ref: '#/components/schemas/campaign'
- *         500:
- *           description: Some server error
- *   /campaigns/{id}:
- *     get:
- *       security:
- *         - cookieAuth: []
- *       summary: Get the campaign by id
- *       tags: [Campaigns]
- *       parameters:
- *         - in: path
- *           name: id
- *           schema:
- *             type: string
- *           required: true
- *           description: The campaign id
- *       responses:
- *         200:
- *           description: The campaign response by id
- *           contens:
- *             application/json:
- *               schema:
- *                 $ref: '#/components/schemas/campaign'
- *         404:
- *           description: The campaign was not found
- *     patch:
- *       security:
- *          - cookieAuth: []
- *       summary: Update the campaign by the id
- *       tags: [Campaigns]
- *       parameters:
- *         - in: path
- *           name: id
- *           schema:
- *             type: string
- *           required: true
- *           description: The campaign id
- *       requestBody:
- *         required: true
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/campaign'
- *       responses:
- *         200:
- *           description: The campaign was updated
- *           content:
- *             application/json:
- *               schema:
- *                 $ref: '#/components/schemas/campaign'
- *         404:
- *           description: The campaign was not found
- *         500:
- *           description: Some error happened
- *     delete:
- *       security:
- *         - cookieAuth: []
- *       summary: Remove the campaign by id
- *       tags: [Campaigns]
- *       parameters:
- *         - in: path
- *           name: id
- *           schema:
- *             type: string
- *           required: true
- *           description: The campaign id
- *  
- *       responses:
- *         200:
- *           description: The campaign was deleted
- *         404:
- *           description: The campaign was not found
- */
+    if (!Object.keys(payload).length) {
+      return res.status(400).json({
+        status: false,
+        error: {
+          message: 'Body is empty, cannot update the campaign.',
+        },
+      });
+    }
+    try {
+      const campaign = await campaignColl.doc(payload.id).set({ ...payload });
+      return res.status(200).json({
+        status: true,
+        data: campaign,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: false,
+        error: error.message,
+      });
+    }
+  },
 
-const router = express.Router();
+  getCampaign: async (req, res) => {
+    try {
+      const {
+        params: { id },
+      } = req;
+      console.log("id",id);
+      const campaignData = await campaignColl.doc(id).get();
+      if (!campaignData.exists) {
+        return res.status(400).send('No Campaigns found');
+      } else {
+        const campaign = new Campaign(
+          campaignData.data().id,
+          campaignData.data().clientId,
+          campaignData.data().title,
+          campaignData.data().budget,
+          campaignData.data().postCreativeId,
+        );
+        console.log(campaign);
+        return res.status(200).send(campaign);
+      }
+    } catch (error) {
+      return res.status(500).send(error.message);
+    }
+  },
 
-router.get('/:id', verifyToken, CampaignController.getCampaign);
+  getAllCampaigns: async (req, res) => {
+    try {
+      const snapshot = await campaignColl.get();
+      if (snapshot.empty) {
+        return res.status(400).send('No Campaigns found');
+      } else {
+        const campaignList = snapshot.docs.map((doc) => {
+          return new Campaign(
+            doc.data().id,
+            doc.data().clientId,
+            doc.data().title,
+            doc.data().budget,
+            doc.data().postCreativeId,
+          );
+        });
+        return res.status(200).send(campaignList);
+      }
+    } catch (error) {
+      return res.status(500).send(error.message);
+    }
+  },
 
-router.post('/', verifyToken, CampaignController.addCampaign);
+  updateCampaign: async (req, res) => {
+    const {
+      params: { id },
+      body: payload,
+    } = req;
 
-router.patch('/:id', verifyToken, CampaignController.updateCampaign);
+    if (!Object.keys(payload).length) {
+      return res.status(400).json({
+        status: false,
+        error: {
+          message: 'Body is empty, cannot update the campaign.',
+        },
+      });
+    }
+    try {
+      const campaignData = campaignColl.doc(id).update(payload);
+      return res.status(200).send('campaign updated successfully');
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+  },
 
-router.delete('/:id', verifyToken, CampaignController.deleteCampaign);
-
-router.get('/', verifyToken, CampaignController.getAllCampaigns);
-
-export default router;
+  deleteCampaign: async (req, res) => {
+    const {
+      params: { id },
+    } = req;
+    try {
+      await campaignColl.doc(id).delete();
+      return res.status(200).send('campaign deleted successfully');
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+  },
+};

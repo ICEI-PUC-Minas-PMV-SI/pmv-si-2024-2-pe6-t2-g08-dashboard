@@ -1,5 +1,5 @@
 export default class Plan {
-  constructor(id) {
-    (this.id = id);
+  constructor(id, name, amount, options) {
+    (this.id = id), (this.name = name), (this.amount = amount), (this.options = options);
   }
 }
