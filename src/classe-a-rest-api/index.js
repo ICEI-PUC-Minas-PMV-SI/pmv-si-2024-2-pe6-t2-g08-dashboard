@@ -1,23 +1,29 @@
-import express from'express';
-import cookieParser from'cookie-parser';
-import cors from'cors';
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
 import bodyParser from 'body-parser';
 
 import config from './config.js';
-import AuthenticationRoutes from'./routes/authentication.js';
-import UserRoutes from'./routes/users.js';
-import ClientRoutes from'./routes/clients.js';
-import PlansRoutes from'./routes/plans.js';
-import PaymentsRoutes from'./routes/payments.js';
-import CampaignsRoutes from'./routes/campaigns.js';
-import PostCreativesRoutes from'./routes/postCreatives.js';
-import SocialCredentialsRoutes from'./routes/socialCredentials.js';
+import AuthenticationRoutes from './routes/authentication.js';
+import UserRoutes from './routes/users.js';
+import ClientRoutes from './routes/clients.js';
+import PlansRoutes from './routes/plans.js';
+import PaymentsRoutes from './routes/payments.js';
+import CampaignsRoutes from './routes/campaigns.js';
+import PostCreativesRoutes from './routes/postCreatives.js';
+import SocialCredentialsRoutes from './routes/socialCredentials.js';
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  })
+);
+app.options("*", cors());
 app.use(cookieParser());
 app.use(express.json());
 
