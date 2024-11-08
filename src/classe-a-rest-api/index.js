@@ -16,14 +16,24 @@ import PostCreativesRoutes from './routes/postCreatives.js';
 import SocialCredentialsRoutes from './routes/socialCredentials.js';
 
 const app = express();
-
+const allowedOrigins = 'http://localhost:3000'; //https://pmv-si-2024-2-pe6-t2-g08-dashboard-1.onrender.com';
 app.use(
   cors({
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    origin: allowedOrigins,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   })
 );
-app.options("*", cors());
+
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigins);
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
+
+app.options('*', cors());
 app.use(cookieParser());
 app.use(express.json());
 

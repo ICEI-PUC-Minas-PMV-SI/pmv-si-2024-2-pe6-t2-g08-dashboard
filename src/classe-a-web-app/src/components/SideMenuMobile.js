@@ -48,7 +48,7 @@ function SideMenuMobile({ open, toggleDrawer }) {
           <Stack direction="row" sx={{ gap: 1, alignItems: 'center', flexGrow: 1, p: 1 }}>
             <Avatar sizes="small" src="/static/images/avatar/7.jpg" sx={{ width: 36, height: 36 }} />
             <Typography component="p" variant="h6">
-              user name
+              Alan Silva
             </Typography>
           </Stack>
           <MenuButton showBadge>

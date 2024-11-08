@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Link from '@mui/material/Link';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -11,11 +12,12 @@ import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
 import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 
 const mainListItems = [
-  { text: 'Home', icon: <HomeRoundedIcon /> },
-  { text: 'Analytics', icon: <AnalyticsRoundedIcon /> },
-  { text: 'Clientes', icon: <PeopleRoundedIcon /> },
-  { text: 'Campanhas', icon: <AssignmentRoundedIcon /> },
-  { text: 'Usuários', icon: <AssignmentRoundedIcon /> },
+  { text: 'Home', icon: <HomeRoundedIcon />, link: '/' },
+  //{ text: 'Analytics', icon: <AnalyticsRoundedIcon /> ,link:'/'},
+  { text: 'Clientes', icon: <PeopleRoundedIcon />, link: '/clients' },
+  { text: 'Campanhas', icon: <AssignmentRoundedIcon />, link: '/campaigns' },
+  { text: 'Usuários', icon: <AssignmentRoundedIcon />, link: '/users' },
+  { text: 'Planos', icon: <AssignmentRoundedIcon />, link: '/plans' },
 ];
 
 export default function MenuContent() {
@@ -24,10 +26,12 @@ export default function MenuContent() {
       <List dense>
         {mainListItems.map((item, index) => (
           <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton selected={index === 0}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItemButton>
+            <Link href={item.link} underline="none" color="inherit">
+              <ListItemButton selected={index === 0}>
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.text} />
+              </ListItemButton>
+            </Link>
           </ListItem>
         ))}
       </List>

@@ -26,13 +26,13 @@ export default function OptionsMenu() {
   };
   const handleClose = () => {
     setAnchorEl(null);
+    handleLogout();
   };
 
   const { logout } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = async (event) => {
-    event.preventDefault();
+  const handleLogout = async () => {
     await logout();
     navigate('/login');
   };
@@ -77,7 +77,7 @@ export default function OptionsMenu() {
             },
           }}
         >
-          <ListItemText onClick={handleLogout}>Logout</ListItemText>
+          <ListItemText>Logout</ListItemText>
           <ListItemIcon>
             <LogoutRoundedIcon fontSize="small" />
           </ListItemIcon>

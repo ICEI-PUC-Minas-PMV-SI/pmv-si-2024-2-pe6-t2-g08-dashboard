@@ -12,29 +12,38 @@ export const useAuth = () => {
 };
 
 const useProvideAuth = () => {
+  const getCookieValue = (name) => {
+    const regex = new RegExp(`(^| )${name}=([^;]+)`);
+    const match = document.cookie.match(regex);
+    if (match) {
+      return match[2];
+    }
+  };
+
   const [user, setUser] = useState(() => {
-    return localStorage.getItem('user');
+    return getCookieValue('user');
   });
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return user !== null;
-  });
+  const [isAuthenticated, setIsAuthenticated] = useState(user !== null);
 
   useEffect(() => {
-    localStorage.setItem('user', user);
-    setIsAuthenticated(user !== null);
+    document.cookie = `user=${user}`;
+    setIsAuthenticated(user !== null && user !== undefined);
   }, [user]);
 
   const login = async (email, password) => {
     const response = await loginRequest(email, password);
-      if (response.userId) {
+    console.log('response:', response);
+    if (response && response.userId) {
       setUser(response.userId);
     }
     //return response;
   };
 
-  const logout = async() => {
+  const logout = async () => {
     const response = await logoutRequest();
-    setUser(null);
+    if (response) {
+      setUser(null);
+    }
   };
 
   return {

@@ -57,11 +57,11 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 export default function Login() {
   const [emailError, setEmailError] = React.useState(false);
   const [passwordError, setPasswordError] = React.useState(false);
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
   const [open, setOpen] = React.useState(false);
 
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const handleClickOpen = () => {
@@ -83,7 +83,9 @@ export default function Login() {
       password,
     });
     await login(email, password); // Set isAuthenticated to true
-    //navigate('/');
+    if (isAuthenticated) {
+      navigate('/');
+    }
   };
 
   const validateInputs = () => {
@@ -91,7 +93,7 @@ export default function Login() {
     const password = document.getElementById('password');
 
     let emailError = !email.value || !/\S+@\S+\.\S+/.test(email.value);
-    let passwordError = !password.value || password.value.length < 6
+    let passwordError = !password.value || password.value.length < 6;
     setEmailError(emailError);
     setPasswordError(passwordError);
     return !(emailError || passwordError);
@@ -101,7 +103,7 @@ export default function Login() {
     <SignInContainer direction="column" justifyContent="space-between">
       <Card variant="outlined">
         <Typography component="h1" variant="h4" sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}>
-          Sign in
+          Login
         </Typography>
         <Box
           component="form"
@@ -134,9 +136,9 @@ export default function Login() {
           </FormControl>
           <FormControl>
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <FormLabel htmlFor="password">Password</FormLabel>
+              <FormLabel htmlFor="password">Senha</FormLabel>
               <Link component="button" type="button" onClick={handleClickOpen} variant="body2" sx={{ alignSelf: 'baseline' }}>
-                Forgot your password?
+                Esqueceu sua senha?
               </Link>
             </Box>
             <TextField
@@ -155,12 +157,12 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </FormControl>
-          <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
+          <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Lembrar-me" />
           <ForgotPassword open={open} handleClose={handleClose} />
           <Button fullWidth variant="contained" onClick={handleSubmit}>
-            Sign in
+            Entrar
           </Button>
-          <Typography sx={{ textAlign: 'center' }}>
+          {/*  <Typography sx={{ textAlign: 'center' }}>
             Don&apos;t have an account?{' '}
             <span>
               <Link href="/signup/" variant="body2" sx={{ alignSelf: 'center' }}>
@@ -168,6 +170,7 @@ export default function Login() {
               </Link>
             </span>
           </Typography>
+          */}
         </Box>
       </Card>
     </SignInContainer>

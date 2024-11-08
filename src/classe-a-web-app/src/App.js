@@ -4,7 +4,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import AppTheme from './theme/AppTheme';
 import { AuthProvider } from './providers/Auth';
 import PrivateRoute from './utils/PrivateRoute';
-import { Home, Clients, Login, Signup, ForgotPassword, Plans, Campaigns, Users, Error404 } from './pages/index';
+import { Home, Clients, Login, Signup, Plans, Campaigns, Users, Error404 } from './pages/index';
 
 function App(props) {
   return (
@@ -15,7 +15,6 @@ function App(props) {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
 
             {/* Private Routes */}
             <Route path="/" element={<PrivateRoute element={<Home />} />} />
