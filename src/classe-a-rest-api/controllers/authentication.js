@@ -52,7 +52,7 @@ export default {
           res.cookie('access_token', idToken, {
             httpOnly: true,
           });
-          return res.status(200).json({ message: 'User logged in successfully', userId: (userCredential.user.uid) });
+          return res.status(200).json({ message: 'User logged in successfully', userId: (userCredential.user.uid), accessToken: idToken });
         } else {
           return res.status(500).json({ error: 'Internal Server Error' });
         }
