@@ -1,4 +1,4 @@
-# TÍTULO DO PROJETO
+# CLASSE A COMPANY - DASHBOARD
 
 `CURSO: Sistemas de Informação`
 
@@ -6,7 +6,9 @@
 
 `SEMESTRE: 6º`
 
-Descrever resumidamente, em um ou dois parágrafos, o projeto que está sendo desenvolvido.
+A solução da *Classe A Company* integra uma API escalável que facilita a comunicação entre a empresa e seus clientes, permitindo o acesso e manipulação de dados de forma segura e ágil. A aplicação móvel permite que os clientes monitorem o desempenho de suas contas no Instagram, gerenciem campanhas, organizem agendas e capturem imagens e vídeos diretamente no app, otimizando suas estratégias de marketing.
+
+O web app centraliza o gerenciamento de clientes e campanhas, com ferramentas para cadastrar informações detalhadas, acompanhar objetivos, orçamentos e cronogramas, além de fornecer relatórios de desempenho. A plataforma também integra a comunicação para aprovações e feedbacks, e organiza tarefas e equipes, promovendo uma gestão mais eficiente e produtiva.
 
 ## Integrantes
 
