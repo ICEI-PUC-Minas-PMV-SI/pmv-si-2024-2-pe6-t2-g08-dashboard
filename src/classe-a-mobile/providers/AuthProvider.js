@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext, createContext, React } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { loginRequest, logoutRequest, getUserInfo } from '../utils/services';
+import { loginRequest, logoutRequest, getUserInfo, getClientInfo } from '../utils/services';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -41,19 +41,20 @@ const useProvideAuth = () => {
     }
   }, [userInfo.userToken]);
 
-  useEffect(async () => {
-    const userId = await getValue('userId');
-    const userToken = await getValue('userToken');
-    const clientId = await getValue('clientId');
-    const userData = await getValue('userData');
+  useEffect(() => {
+    const fetchData = async () => {
+      const userId = await getValue('userId');
+      const userToken = await getValue('userToken');
+      const clientId = await getValue('clientId');
+      const userData = await getValue('userData');
 
-    setUserInfo({userToken, userId, clientId, userData})
+      setUserInfo({ userToken, userId, clientId, userData });
 
-    const timeoutId = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-
-    return () => clearTimeout(timeoutId);
+      const timeoutId = setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);
+    };
+    fetchData();
   }, []);
 
   const login = async (email, password) => {
@@ -63,6 +64,8 @@ const useProvideAuth = () => {
       setValue('userToken', response.accessToken);
       const userData = await getUserInfo(response.userId);
       setValue('userData', userData);
+      const clientData = await getClientInfo(response.userId);
+      setValue('clientId', clientData.id);
     }
   };
 

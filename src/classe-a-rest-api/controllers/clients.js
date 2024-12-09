@@ -36,10 +36,11 @@ export default {
         params: { id },
       } = req;
       console.log("id",id);
-      const clientData = await clientColl.doc(id).get();
-      if (!clientData.exists) {
+      const snapshot = await clientColl.where('userId','==',id).get();
+      if (snapshot.empty) {
         return res.status(400).send('No Clients found');
       } else {
+        const clientData = snapshot.docs.at(0);
         const client = new Client(
           clientData.data().id,
           clientData.data().companyName,

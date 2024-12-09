@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext, createContext, React } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DarkTheme as NavigationDarkTheme, DefaultTheme as NavigationDefaultTheme, ThemeProvider as NavigationThemeProvider } from '@react-navigation/native';
-import { MD2DarkTheme, MD2LightTheme, Provider as PaperProvider  } from 'react-native-paper';
+import { MD2DarkTheme, MD2LightTheme, Provider as PaperProvider } from 'react-native-paper';
 import merge from 'deepmerge';
 
 const ThemeContext = createContext();
@@ -43,6 +43,20 @@ const CalendarDarkTheme = {
   indicatorColor: '#1e88e5', // Blue for the indicator
 };
 
+const ChartsDarkTheme = {
+  backgroundColor: '#000000', // Dark blue-gray background
+  backgroundGradientFrom: '#131d22', // Medium dark blue-gray gradient start
+  backgroundGradientTo: '#263238', // Light slate blue-gray gradient end
+  labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+};
+
+const ChartsLightTheme = {
+  backgroundColor: '#b0bec5', // Very light gray-blue background
+  backgroundGradientFrom: '#cfd8dc', // Light gray-blue gradient start
+  backgroundGradientTo: '#e1e8ee', // Almost white gray-blue gradient end
+  labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+};
+
 export const ThemeProvider = ({ children }) => {
   const theme = useProvideTheme();
 
@@ -71,7 +85,9 @@ const useProvideTheme = () => {
 
   const createTheme = () => {
     const theme =
-      defaultTheme === 'light' ? { ...CombinedDefaultTheme, calendarTheme: CalendarLightTheme } : { ...CombinedDarkTheme, calendarTheme: CalendarDarkTheme };
+      defaultTheme === 'light'
+        ? { ...CombinedDefaultTheme, calendarTheme: CalendarLightTheme, chartsTheme: ChartsLightTheme }
+        : { ...CombinedDarkTheme, calendarTheme: CalendarDarkTheme, chartsTheme: ChartsDarkTheme };
     return {
       ...theme,
 
@@ -88,10 +104,13 @@ const useProvideTheme = () => {
     setValue(defaultTheme === 'light' ? 'dark' : 'light');
   };
 
-  useEffect(async () => {
-    const value = await getValue('defaultTheme');
-    console.log(value);
-    setDefaultTheme(value);
+  useEffect(() => {
+    const fetchTheme = async () => {
+      const value = await getValue('defaultTheme');
+      console.log(value);
+      setDefaultTheme(value);
+    };
+    fetchTheme();
   }, []);
 
   useEffect(() => {

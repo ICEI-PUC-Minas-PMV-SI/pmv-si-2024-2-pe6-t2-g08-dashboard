@@ -2,19 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { View, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
 import { Card, Title, Paragraph, Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { getAllCampaigns } from '../utils/services';
-import { useAuth } from '../providers/AuthProvider';
+import { getAllCreatives } from '../utils/services';
 
-const CampaignsPage = () => {
-  const [campaigns, setData] = useState([]);
+const CreativesPage = ({ route }) => {
+  const [creatives, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { clientId } = useAuth();
   const navigation = useNavigation();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getAllCampaigns(clientId);
+        const { campaignId } = route.params;
+        const data = await getAllCreatives(campaignId);
         setData(data);
       } catch (error) {
         console.log(error);
@@ -28,20 +27,20 @@ const CampaignsPage = () => {
     fetchData();
   }, []);
 
-  // Render each card for the campaigns
+  // Render each card for the creatives
   const renderItem = ({ item }) => {
     return (
       <Card style={styles.card}>
+        <Card.Cover source={{ uri: item.mediaUrl }} />
         <Card.Content>
-          <Title>{item.title}</Title>
-          <Paragraph>{item.description || 'No description available'}</Paragraph>
-          <Paragraph>Budget: {item.budget}</Paragraph>
+          <Paragraph style={styles.paragraph}>{item.content.substring(0,50)+'...' || 'No description available'}</Paragraph>
+          <Paragraph>Media: {item.mediaType}</Paragraph>
         </Card.Content>
         <Card.Actions>
           <Button
             onPress={() => {
-              navigation.navigate('Creatives', {
-                campaignId: item.id,
+              navigation.navigate('CreativeChat', {
+                creativeData: item,
               });
             }}
             mode="contained"
@@ -62,8 +61,8 @@ const CampaignsPage = () => {
   }
   return (
     <View style={styles.FlatListContainer}>
-      <Title style={styles.TitlePage}>Campanhas</Title>
-      <FlatList data={campaigns} keyExtractor={(item) => item.id} renderItem={renderItem} contentContainerStyle={styles.listContainer} />
+      <Title style={styles.TitlePage}>Criativos</Title>
+      <FlatList data={creatives} keyExtractor={(item) => item.id} renderItem={renderItem} contentContainerStyle={styles.listContainer} />
     </View>
   );
 };
@@ -87,6 +86,10 @@ const styles = StyleSheet.create({
   card: {
     marginBottom: 16,
   },
+  paragraph: {
+    textAlign: 'center',
+    margin: 10,
+  },
 });
 
-export default CampaignsPage;
+export default CreativesPage;

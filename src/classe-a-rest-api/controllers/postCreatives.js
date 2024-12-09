@@ -42,11 +42,12 @@ export default {
       } else {
         const postCreative = new PostCreative(
           postCreativeData.data().id,
-          postCreativeData.data().clientId,
+          postCreativeData.data().campaignId,
           postCreativeData.data().content,
           postCreativeData.data().mediaType,
           postCreativeData.data().mediaUrl,
           postCreativeData.data().evaluation,
+          postCreativeData.data().status,
         );
         console.log(postCreative);
         return res.status(200).send(postCreative);
@@ -58,18 +59,22 @@ export default {
 
   getAllPostCreatives: async (req, res) => {
     try {
-      const snapshot = await postCreativeColl.get();
+      const {
+        params: { campaignid },
+      } = req;
+      const snapshot = await postCreativeColl.where('campaignId','==',campaignid).get();
       if (snapshot.empty) {
         return res.status(400).send('No PostCreatives found');
       } else {
         const postCreativeList = snapshot.docs.map((doc) => {
           return new PostCreative(
             doc.data().id,
-            doc.data().clientId,
+            doc.data().campaignId,
             doc.data().content,
             doc.data().mediaType,
             doc.data().mediaUrl,
             doc.data().evaluation,
+            doc.data().status,
           );
         });
         return res.status(200).send(postCreativeList);

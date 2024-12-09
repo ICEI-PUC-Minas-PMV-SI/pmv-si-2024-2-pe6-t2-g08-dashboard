@@ -57,9 +57,9 @@ const getUserInfo = (userId) => {
    });
 };
 
-const getClientInfo = (clientId) => {
+const getClientInfo = (userId) => {
   return services
-   .get(`/clients/${clientId}`)
+   .get(`/clients/${userId}`)
    .then((response) =>{
      console.log('response:', response);
      return response.data;
@@ -70,5 +70,31 @@ const getClientInfo = (clientId) => {
    });
 };
 
-export { loginRequest, logoutRequest, getClientInfo, getUserInfo };
+const getAllCampaigns = (clientId) => {
+  return services
+   .get(`/campaigns/all/${clientId}`)
+   .then((response) =>{
+     console.log('response:', response);
+     return response.data;
+   })
+   .catch((error) =>{
+     console.log('error:', error);
+     alert(error);
+   });
+};
+
+const getAllCreatives = (campaignId) => {
+  return services
+   .get(`/post-creatives/all/${campaignId}`)
+   .then((response) =>{
+     console.log('response:', response);
+     return response.data;
+   })
+   .catch((error) =>{
+     console.log('error:', error);
+     alert(error);
+   });
+};
+
+export { loginRequest, logoutRequest, getClientInfo, getUserInfo, getAllCampaigns, getAllCreatives };
 export default services;

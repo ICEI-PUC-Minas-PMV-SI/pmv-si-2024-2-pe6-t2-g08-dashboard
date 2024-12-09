@@ -10,6 +10,9 @@ import LoginScreen from './pages/LoginScreen';
 import HomePage from './pages/HomePage';
 import AnalyticsPage from './pages/AnalyticsPage';
 import CalendarPage from './pages/CalendarPage';
+import CampaignsPage from './pages/CampaignsPage';
+import CreativesPage from './pages/CreativesPage';
+import CreativeChatPage from  './pages/CreativeChatPage';
 import CustomDrawer from './components/CustomDrawer';
 import { useAuth } from './providers/AuthProvider';
 import { useTheme } from './providers/ThemeProvider';
@@ -33,7 +36,6 @@ const AppNavigation = () => {
           AnaLytics: 'area-chart',
           Campaigns: 'campaign',
         };
-
         return <MaterialIcons name={icons[route.name]} color={color} size={size} />;
       },
       headerShown: false,
@@ -42,8 +44,9 @@ const AppNavigation = () => {
       Home: HomePage,
       Calendar: CalendarPage,
       AnaLytics: AnalyticsPage,
-      Campaigns: HomePage,
+      Campaigns: CampaignsPage,
     },
+    
   });
 
   const RootStack = createDrawerNavigator({
@@ -51,6 +54,8 @@ const AppNavigation = () => {
     screens: {
       Main: TabStack,
       Profile: HomePage,
+      Creatives: CreativesPage,
+      CreativeChat: CreativeChatPage,
     },
     screenOptions: {
       // headerShown: false,
@@ -83,7 +88,6 @@ const AppNavigation = () => {
       logoHeight={150}
       logoWidth={150}
     >
-      {' '}
       {isAuthenticated ? <Navigation theme={paperTheme} /> : <UnloggedNavigation theme={paperTheme} />}
     </AnimatedSplash>
   );

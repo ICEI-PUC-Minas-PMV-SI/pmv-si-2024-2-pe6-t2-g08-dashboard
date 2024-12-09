@@ -18,10 +18,16 @@ const CalendarPage = () => {
 
   return (
     <View style={styles.container}>
-      <Calendar
+      <Agenda
         style={styles.calendar}
         onDayPress={(day) => {
           setSelected(day.dateString);
+        }}
+        items={{
+          '2024-12-22': [{name: 'item 1 - any js object'}],
+          '2024-12-23': [{name: 'item 2 - any js object', height: 80}],
+          '2024-12-24': [],
+          '2024-12-25': [{name: 'item 3 - any js object'}, {name: 'any js object'}]
         }}
         theme={{...paperTheme.calendarTheme}}
         markedDates={{

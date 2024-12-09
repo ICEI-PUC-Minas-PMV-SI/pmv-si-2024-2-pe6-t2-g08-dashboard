@@ -11,17 +11,18 @@ import PostCreativeController from '../controllers/postCreatives.js';
  *       type: object
  *       required:
  *         - id
- *         - clientId
+ *         - campaignId
  *         - content
  *         - mediaType
  *         - mediaUrl
+ *         - status
  *       properties:
  *         id:
  *           type: string
  *           description: The auto-generated id of the postCreative
- *         clientId:
+ *         campaignId:
  *           type: string
- *           description: The clientId of the postCreative
+ *           description: The campaignId of the postCreative
  *         content:
  *           type: string
  *           description: The postCreative content
@@ -32,15 +33,19 @@ import PostCreativeController from '../controllers/postCreatives.js';
  *           type: string
  *           description: the url of the media 
  *         evaluation:
- *           type: string[]
+ *           type: object[]
  *           description: the evaluations of the postCreative
+ *         status:
+ *           type: string
+ *           description: the status of the postCreative
  *       example:
  *         id: Lx2gPf5q5fhDoBtAf5j2KCemKkv2
- *         clientId: q5w4d4qd6w4q6wd465qdw
+ *         campaignId: qw464qwd4q5wd4654d465qw
  *         content: This is the text content of a post directed to a social network
  *         mediaType: Image
  *         mediaUrl: https://someurl.com/some-file.jpg
- *         evaluation: [Array of evaluations]
+ *         evaluation: []
+ *         status: ToBeApproved
  */
 
  /**
@@ -48,23 +53,8 @@ import PostCreativeController from '../controllers/postCreatives.js';
  * tags:
  *   name: PostCreatives
  *   description: The postCreatives controller of the API
- * paths:
- *   /post-creatives:
- *     get:
- *       security:
- *         - cookieAuth: []
- *       summary: Lists all the postCreatives
- *       tags: [PostCreatives]
- *       responses:
- *         200:
- *           description: The list of the postCreatives
- *           content:
- *             application/json:
- *               schema:
- *                 type: array
- *                 items:
- *                   $ref: '#/components/schemas/PostCreative'
- *     post:
+ * /post-creatives:
+ *    post:
  *       security:
  *         - cookieAuth: []
  *       summary: Create a new postCreative
@@ -84,15 +74,37 @@ import PostCreativeController from '../controllers/postCreatives.js';
  *                 $ref: '#/components/schemas/PostCreative'
  *         500:
  *           description: Some server error
- *   /post-creatives/{id}:
- *     get:
+ * /post-creatives/all/{campaignid}:
+ *    get:
+ *       security:
+ *         - cookieAuth: []
+ *       summary: Lists all the postCreatives
+ *       tags: [PostCreatives]
+ *       parameters:
+ *         - in: path
+ *           name: campaignid
+ *           schema:
+ *             type: string
+ *           required: true
+ *           description: The postCreative campaignid
+ *       responses:
+ *         200:
+ *           description: The list of the postCreatives
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: array
+ *                 items:
+ *                   $ref: '#/components/schemas/PostCreative'
+ * /post-creatives/{id}:
+ *    get:
  *       security:
  *         - cookieAuth: []
  *       summary: Get the postCreative by id
  *       tags: [PostCreatives]
  *       parameters:
  *         - in: path
- *           clientId: id
+ *           campaignId: id
  *           schema:
  *             type: string
  *           required: true
@@ -106,14 +118,14 @@ import PostCreativeController from '../controllers/postCreatives.js';
  *                 $ref: '#/components/schemas/PostCreative'
  *         404:
  *           description: The postCreative was not found
- *     patch:
+ *    patch:
  *       security:
  *          - cookieAuth: []
  *       summary: Update the postCreative by the id
  *       tags: [PostCreatives]
  *       parameters:
  *         - in: path
- *           clientId: id
+ *           campaignId: id
  *           schema:
  *             type: string
  *           required: true
@@ -135,14 +147,14 @@ import PostCreativeController from '../controllers/postCreatives.js';
  *           description: The postCreative was not found
  *         500:
  *           description: Some error happened
- *     delete:
+ *    delete:
  *       security:
  *         - cookieAuth: []
  *       summary: Remove the postCreative by id
  *       tags: [PostCreatives]
  *       parameters:
  *         - in: path
- *           clientId: id
+ *           campaignId: id
  *           schema:
  *             type: string
  *           required: true
@@ -165,6 +177,6 @@ router.patch('/:id', verifyToken, PostCreativeController.updatePostCreative);
 
 router.delete('/:id', verifyToken, PostCreativeController.deletePostCreative);
 
-router.get('/', verifyToken, PostCreativeController.getAllPostCreatives);
+router.get('/all/:campaignid', verifyToken, PostCreativeController.getAllPostCreatives);
 
 export default router;

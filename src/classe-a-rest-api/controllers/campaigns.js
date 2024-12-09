@@ -45,7 +45,7 @@ export default {
           campaignData.data().clientId,
           campaignData.data().title,
           campaignData.data().budget,
-          campaignData.data().postCreativeId,
+          campaignData.data().description,
         );
         console.log(campaign);
         return res.status(200).send(campaign);
@@ -57,7 +57,11 @@ export default {
 
   getAllCampaigns: async (req, res) => {
     try {
-      const snapshot = await campaignColl.get();
+      const {
+        params: { clientid },
+      } = req;
+      console.log(clientid);
+      const snapshot = await campaignColl.where('clientId','==',clientid).get();
       if (snapshot.empty) {
         return res.status(400).send('No Campaigns found');
       } else {
@@ -67,7 +71,7 @@ export default {
             doc.data().clientId,
             doc.data().title,
             doc.data().budget,
-            doc.data().postCreativeId,
+            doc.data().description,
           );
         });
         return res.status(200).send(campaignList);
