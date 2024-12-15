@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useNavigate } from 'react-router-dom';
 import { DrawerItem, DrawerContentScrollView } from '@react-navigation/drawer';
 import { Title, Caption, Paragraph, Drawer, Text, TouchableRipple, Switch } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -9,6 +10,12 @@ import { useTheme } from '../providers/ThemeProvider';
 const CustomDrawer = (props) => {
   const { userData, logout } = useAuth();
   const { toogleTheme, defaultTheme } = useTheme();
+  const navigate = useNavigate();
+
+  const onLogout = () =>{
+    logout();
+    navigate('/login');
+  }
 
   return (
       <View style={styles.drawerContent}>
@@ -45,7 +52,7 @@ const CustomDrawer = (props) => {
             icon={({ color, size }) => <MaterialCommunityIcons name="logout-variant" color={color} size={size} />}
             label="Sair"
             style={{alignItems:'center', width: '100%'}}
-            onPress={() => {logout()}}
+            onPress={() => {onLogout()}}
           />
         </View>
       </View>

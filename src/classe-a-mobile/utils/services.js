@@ -4,7 +4,7 @@ import axios from 'axios';
 const services = axios.create({
   //baseURL: "https://pmv-si-2024-2-pe6-t2-g08-dashboard.onrender.com", // Replace with your API's base URL
   baseURL: 'http://localhost:4000',
-  withCredentials: true, 
+  withCredentials: true,
   headers: {
     'Access-Control-Allow-Origin': '*',
     'content-type': 'application/json; charset=utf-8',
@@ -23,7 +23,7 @@ const loginRequest = (email, password) => {
     .post('/login', { email, password })
     .then((response) => {
       console.log(response);
-      return {...response.data};
+      return { ...response.data };
     })
     .catch((error) => {
       console.log('error:', error);
@@ -46,55 +46,68 @@ const logoutRequest = () => {
 
 const getUserInfo = (userId) => {
   return services
-   .get(`/users/${userId}`)
-   .then((response) =>{
-     console.log('response:', response);
-     return response.data;
-   })
-   .catch((error) =>{
-     console.log('error:', error);
-     alert(error);
-   });
+    .get(`/users/${userId}`)
+    .then((response) => {
+      console.log('response:', response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.log('error:', error);
+      alert(error);
+    });
 };
 
 const getClientInfo = (userId) => {
   return services
-   .get(`/clients/${userId}`)
-   .then((response) =>{
-     console.log('response:', response);
-     return response.data;
-   })
-   .catch((error) =>{
-     console.log('error:', error);
-     alert(error);
-   });
+    .get(`/clients/${userId}`)
+    .then((response) => {
+      console.log('response:', response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.log('error:', error);
+      alert(error);
+    });
 };
 
 const getAllCampaigns = (clientId) => {
   return services
-   .get(`/campaigns/all/${clientId}`)
-   .then((response) =>{
-     console.log('response:', response);
-     return response.data;
-   })
-   .catch((error) =>{
-     console.log('error:', error);
-     alert(error);
-   });
+    .get(`/campaigns/all/${clientId}`)
+    .then((response) => {
+      console.log('response:', response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.log('error:', error);
+      alert(error);
+    });
 };
 
 const getAllCreatives = (campaignId) => {
   return services
-   .get(`/post-creatives/all/${campaignId}`)
-   .then((response) =>{
-     console.log('response:', response);
-     return response.data;
-   })
-   .catch((error) =>{
-     console.log('error:', error);
-     alert(error);
-   });
+    .get(`/post-creatives/all/${campaignId}`)
+    .then((response) => {
+      console.log('response:', response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.log('error:', error);
+      alert(error);
+    });
 };
 
-export { loginRequest, logoutRequest, getClientInfo, getUserInfo, getAllCampaigns, getAllCreatives };
+const getAllEvents = () => {
+  return services
+    .get(`/calendar/`)
+    .then((response) => {
+      console.log('response:', response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.log('error:', error);
+      alert(error);
+    });
+};
+
+export { loginRequest, logoutRequest, getClientInfo, getUserInfo, getAllCampaigns, getAllCreatives, getAllEvents };
 export default services;

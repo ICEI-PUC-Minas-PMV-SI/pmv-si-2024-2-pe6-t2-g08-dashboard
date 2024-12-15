@@ -10,14 +10,16 @@ import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import AnalyticsRoundedIcon from '@mui/icons-material/AnalyticsRounded';
 import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
 import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import BusinessIcon from '@mui/icons-material/Business';
 
 const mainListItems = [
   { text: 'Home', icon: <HomeRoundedIcon />, link: '/' },
-  //{ text: 'Analytics', icon: <AnalyticsRoundedIcon /> ,link:'/'},
-  { text: 'Clientes', icon: <PeopleRoundedIcon />, link: '/clients' },
+  { text: 'Analytics', icon: <AnalyticsRoundedIcon /> ,link:'/analytics'},
+  { text: 'Clientes', icon: <BusinessIcon />, link: '/clients' },
   { text: 'Campanhas', icon: <AssignmentRoundedIcon />, link: '/campaigns' },
-  { text: 'Usuários', icon: <AssignmentRoundedIcon />, link: '/users' },
-  { text: 'Planos', icon: <AssignmentRoundedIcon />, link: '/plans' },
+  { text: 'Usuários', icon: <PeopleRoundedIcon />, link: '/users' },
+  { text: 'Calendário', icon: <CalendarMonthIcon />, link: '/calendar' },
 ];
 
 export default function MenuContent() {

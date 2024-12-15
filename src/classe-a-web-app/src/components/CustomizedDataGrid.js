@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 
-export default function CustomizedDataGrid({columns, rows}) {
+export default function CustomizedDataGrid({columns, rows, pageSize, onSelectChange, selected}) {
   return (
     <DataGrid
       autoHeight
       checkboxSelection
+      disableMultipleRowSelection
       rows={rows}
       columns={columns}
       getRowClassName={(params) =>
@@ -14,7 +15,7 @@ export default function CustomizedDataGrid({columns, rows}) {
       initialState={{
         pagination: { paginationModel: { pageSize: 20 } },
       }}
-      pageSizeOptions={[10, 20, 50]}
+      pageSizeOptions={pageSize || 20}
       disableColumnResize
       density="compact"
       slotProps={{
@@ -43,6 +44,10 @@ export default function CustomizedDataGrid({columns, rows}) {
           },
         },
       }}
+      onRowSelectionModelChange={(newSelection) => {
+        onSelectChange(newSelection);
+      }}
+      rowSelectionModel={selected}
     />
   );
 }

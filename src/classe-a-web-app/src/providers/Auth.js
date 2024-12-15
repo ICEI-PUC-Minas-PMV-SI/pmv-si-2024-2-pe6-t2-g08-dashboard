@@ -19,22 +19,28 @@ const useProvideAuth = () => {
       return match[2];
     }
   };
-
+  const updateUser = (value) =>{
+    if(value !== null){
+      document.cookie = `user=${value};expires=Session`;
+    }else{
+      document.cookie = `user=;expires=Session`;
+    }
+    setUser(value);
+  }
+  
   const [user, setUser] = useState(() => {
     return getCookieValue('user');
   });
-  const [isAuthenticated, setIsAuthenticated] = useState(user !== null);
+  const [isAuthenticated, setIsAuthenticated] = useState(user !== null && user !== undefined);
 
   useEffect(() => {
-    document.cookie = `user=${user}`;
     setIsAuthenticated(user !== null && user !== undefined);
   }, [user]);
 
   const login = async (email, password) => {
     const response = await loginRequest(email, password);
-    console.log('response:', response);
     if (response && response.userId) {
-      setUser(response.userId);
+      updateUser(response.userId);
     }
     //return response;
   };
@@ -42,7 +48,7 @@ const useProvideAuth = () => {
   const logout = async () => {
     const response = await logoutRequest();
     if (response) {
-      setUser(null);
+      updateUser(null);
     }
   };
 

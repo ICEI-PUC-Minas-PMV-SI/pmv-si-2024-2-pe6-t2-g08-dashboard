@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "-": "^0.0.1",
+    "@chatscope/chat-ui-kit-react": "^2.0.3",
+    "@chatscope/chat-ui-kit-styles": "^1.4.0",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^6.1.6",
@@ -15,10 +18,13 @@
     "axios": "^1.7.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.27.0",
+    "react-router": "^6.28.0",
+    "react-router-dom": "^7.0.2",
     "react-script": "^2.0.5",
     "react-scripts": "^5.0.1",
-    "web-vitals": "^2.1.4"
+    "react-web-gifted-chat": "^0.6.7",
+    "rsuite": "^5.75.0",
+    "save-dev": "^0.0.1-security"
   },
   "scripts": {
     "start": "react-scripts --openssl-legacy-provider start",
@@ -36,5 +42,8 @@
     ">0.2%",
     "not dead",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "web-vitals": "^4.2.4"
+  }
 }

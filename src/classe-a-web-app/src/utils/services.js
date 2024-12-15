@@ -88,5 +88,45 @@ const createUser = (payload) => {
      alert(error);
    });
 };
-export { loginRequest, logoutRequest, createUser, getAllUsers, getAllClients, getAllPlans };
+
+const getAllEvents = () => {
+  return services
+    .get(`/calendar/`)
+    .then((response) => {
+      console.log('response:', response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.log('error:', error);
+      alert(error);
+    });
+};
+
+const getAllCampaigns = (clientId) => {
+  return services
+    .get(`/campaigns/all/${clientId}`)
+    .then((response) => {
+      console.log('response:', response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.log('error:', error);
+      alert(error);
+    });
+};
+
+const getAllCreatives = (campaignId) => {
+  return services
+    .get(`/post-creatives/all/${campaignId}`)
+    .then((response) => {
+      console.log('response:', response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.log('error:', error);
+      alert(error);
+    });
+};
+
+export { loginRequest, logoutRequest, createUser, getAllUsers, getAllClients, getAllPlans, getAllEvents, getAllCampaigns, getAllCreatives };
 export default services;

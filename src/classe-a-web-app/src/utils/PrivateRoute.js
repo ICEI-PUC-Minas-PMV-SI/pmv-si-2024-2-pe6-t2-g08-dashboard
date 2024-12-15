@@ -10,8 +10,7 @@ import { useAuth } from '../providers/Auth';
 
 const PrivateRoute = ({ element: Component }) => {
   const { isAuthenticated } = useAuth();
-  console.log('isAuthenticated:',isAuthenticated);
-  // If the user is authenticated, render the component; otherwise, redirect to login
+
   return isAuthenticated ? (
     <Box sx={{ display: 'flex' }}>
       <SideMenu />

@@ -1,4 +1,6 @@
-import { useState, useContext, createContext } from 'react';
+import { useState, useContext, createContext, useEffect } from 'react';
+import { useAuth } from './Auth';
+import { getAllClients } from '../utils/services';
 
 // Criação do contexto de clientes
 const ClientsContext = createContext();
@@ -18,6 +20,20 @@ export const useClients = () => {
 const useProvideClients = () => {
   const [clients, setClients] = useState([]);
   const [selectedClient, setSelectedClient] = useState(null);
+  const { isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getAllClients();
+      console.log("clients:", data);
+      setSelectedClient(data[0].id)
+      setClients(data);
+    };
+
+    if (isAuthenticated && clients.length === 0) {
+      fetchData();
+    }
+  }, [isAuthenticated]);
 
   // Função para adicionar um novo cliente
   const addClient = (client) => {
@@ -36,11 +52,7 @@ const useProvideClients = () => {
       ...prevClient,
       ...newInfo,
     }));
-    setClients((prevClients) =>
-      prevClients.map((client) =>
-        client.id === selectedClient.id ? { ...client, ...newInfo } : client
-      )
-    );
+    setClients((prevClients) => prevClients.map((client) => (client.id === selectedClient.id ? { ...client, ...newInfo } : client)));
   };
 
   return {

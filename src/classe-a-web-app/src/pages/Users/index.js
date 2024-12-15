@@ -29,34 +29,37 @@ const Users = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [openManage, setOpen] = React.useState(false);
+  const [selectedValue, setSelectedValue] = useState();
+
+  const onSelectionChange = (value) => {
+    setSelectedValue(value[0]);
+  };
+
+  const fetchData = async () => {
+    const data = await getAllUsers();
+    console.log(data);
+    setLoading(false);
+    setData(data);
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await getAllUsers();
-      console.log(data);
-      setLoading(false);
-      setData(data);
-    };
     fetchData();
   }, []);
 
-  const handleClose =async ()=>{
+  const handleClose = () => {
     setOpen(false);
-    const data = await getAllUsers();
-      console.log(data);
-      setLoading(false);
-      setData(data);
-  }
+    fetchData();
+  };
 
   return (
     <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
       <Grid container spacing={2}>
-        <Grid size={10}>
+        <Grid size={9}>
           <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
             Usuários
           </Typography>
         </Grid>
-        <Grid size={2}>
+        <Grid size={3}>
           <Button
             variant="contained"
             onClick={() => {
@@ -68,12 +71,9 @@ const Users = () => {
         </Grid>
       </Grid>
 
-      <ManageUser
-        open={openManage}
-        handleClose={handleClose}
-      />
+      <ManageUser open={openManage} handleClose={handleClose} />
       <Grid container spacing={2} columns={12}>
-        {loading ? <CircularProgress /> : <CustomizedDataGrid columns={columns} rows={data} />}
+        {loading ? <CircularProgress /> : <CustomizedDataGrid columns={columns} rows={data} onSelectChange={onSelectionChange} selected={selectedValue} />}
       </Grid>
     </Box>
   );

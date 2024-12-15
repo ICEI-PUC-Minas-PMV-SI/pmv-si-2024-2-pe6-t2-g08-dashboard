@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect} from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -7,7 +7,6 @@ import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
@@ -15,6 +14,7 @@ import ForgotPassword from './ForgotPassword';
 
 import { useAuth } from '../../providers/Auth';
 import { useNavigate } from 'react-router-dom';
+import logo from '../../assets/logo-classe-a-company.png';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -78,15 +78,15 @@ export default function Login() {
       event.preventDefault();
       return;
     }
-    console.log({
-      email,
-      password,
-    });
     await login(email, password); // Set isAuthenticated to true
+   
+  };
+  
+  useEffect(() => {
     if (isAuthenticated) {
       navigate('/');
     }
-  };
+  }, [isAuthenticated]); 
 
   const validateInputs = () => {
     const email = document.getElementById('email');
@@ -101,10 +101,8 @@ export default function Login() {
 
   return (
     <SignInContainer direction="column" justifyContent="space-between">
-      <Card variant="outlined">
-        <Typography component="h1" variant="h4" sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}>
-          Login
-        </Typography>
+      <Card variant="outlined" >
+        <img src={logo} style={{width:"80%", height:"auto", margin:"40px auto"}}/>
         <Box
           component="form"
           noValidate

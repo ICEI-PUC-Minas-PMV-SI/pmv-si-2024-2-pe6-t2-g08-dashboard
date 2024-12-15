@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid2';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import CustomizedDataGrid from '../../components/CustomizedDataGrid';
-import { getAllClients } from '../../utils/services';
+import { useClients } from '../../providers/Clients';
 import ManageUser from './ManageUser';
 
 const Clients = () => {
@@ -34,54 +33,42 @@ const Clients = () => {
       minWidth: 80,
     },
   ];
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
+
+  const { clients } = useClients();
   const [openManage, setOpen] = React.useState(false);
+  const [selectedValue, setSelectedValue] = useState();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getAllClients();
-      console.log(data);
-      setLoading(false);
-      setData(data);
-    };
-    fetchData();
-  }, []);
+  const onSelectionChange = (value) => {
+    setSelectedValue(value[0]);
+  };
 
-  const handleClose =async ()=>{
+  const handleClose = () => {
     setOpen(false);
-    const data = await getAllClients();
-      console.log(data);
-      setLoading(false);
-      setData(data);
-  }
+  };
 
   return (
     <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
       <Grid container spacing={2}>
-        <Grid size={10}>
+        <Grid size={9}>
           <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
-            Usuários
+            Clientes
           </Typography>
         </Grid>
-        <Grid size={2}>
+        <Grid size={3}>
           <Button
             variant="contained"
             onClick={() => {
               setOpen(true);
             }}
           >
-            Criar Usuário
+            Adicionar Cliente
           </Button>
         </Grid>
       </Grid>
 
-      <ManageUser
-        open={openManage}
-        handleClose={handleClose}
-      />
+      <ManageUser open={openManage} handleClose={handleClose} />
       <Grid container spacing={2} columns={12}>
-        {loading ? <CircularProgress /> : <CustomizedDataGrid columns={columns} rows={data} />}
+        <CustomizedDataGrid columns={columns} rows={clients} onSelectChange={onSelectionChange} selected={selectedValue} />
       </Grid>
     </Box>
   );
