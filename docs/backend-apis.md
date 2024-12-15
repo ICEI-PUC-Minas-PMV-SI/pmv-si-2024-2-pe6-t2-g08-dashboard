@@ -8,7 +8,7 @@ A API foi desenvolvida seguindo os padrões REST, utiliza autenticação JWT, e 
 
 O objetivo desta API é fornecer uma interface robusta e flexível para gerenciar informações, facilitando a comunicação entre a empresa e seus clientes por meio de uma integração eficiente com aplicações web e mobile.
 
-Essa API serve como um ponto central para que as aplicações possam acessar e manipular dados de forma ágil e segura. Com um design escalável, a API é projetada para suportar futuras implementações e melhorias no sistema, permitindo que a empresa evolua conforme as demandas do mercado e as necessidades dos usuários. Isso resulta em um sistema mais maduro e adaptável, capaz de acompanhar as tendências e inovações tecnológicas.
+Essa API serve como um ponto central para que as aplicações possam acessar e manipular dados de forma ágil e segura. Com um design escalável, a API é projetada para suportar futuras implementações e melhorias no sistema, permitindo que a empresa evolua conforme as demandas do mercado e as necessidades dos usuários. Isso resulta em um sistema mais maduro e adaptável, capaz de acompanhar as tendências e inovações tecnológicas, além do alto potencial de escalabilidade.
 
 
 ## Arquitetura
