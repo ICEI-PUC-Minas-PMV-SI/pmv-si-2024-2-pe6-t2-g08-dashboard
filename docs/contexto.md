@@ -1,4 +1,4 @@
-# Introdução
+# Introduçãoo
 
 O projeto será feito em parceria com a empresa Classe A Company, uma empresa que atua no ramo do marketing digital, prestando serviços de marketing para outras empresas, ajudando-as a se posicionar com autoridade nas redes sociais. O projeto de sistemas distribuídos irá colaborar com a Classe A criando uma área de integração entre a empresa e os seus clientes, onde será possível que o cliente final tenha acesso a todos os serviços ofertados dentro de uma aplicação web e um aplicativo mobile que irão centralizar as principais informações referentes à determinado cliente, para que ele tenha um acesso rápido e prático. 
 
