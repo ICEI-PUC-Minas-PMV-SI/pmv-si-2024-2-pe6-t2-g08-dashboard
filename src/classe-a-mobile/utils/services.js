@@ -1,8 +1,24 @@
 import axios from 'axios';
+import { initializeApp } from 'firebase/app';
+import {getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 //import 'dotenv/config';
 
+const firebaseConfig = {
+  apiKey: "AIzaSyAAkFZHevbPw-RAdX3LoFUk9hWCoZ-xYRY",
+  authDomain: "g8-classe-a-company.firebaseapp.com",
+  projectId: "g8-classe-a-company",
+  storageBucket: "g8-classe-a-company.appspot.com",
+  messagingSenderId: "429435376174",
+  appId: "1:429435376174:web:ce82fc91f84b6dba8a85bf",
+  measurementId: "G-NP10E8GLJM"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth =  getAuth();
+
 const services = axios.create({
-  //baseURL: "https://pmv-si-2024-2-pe6-t2-g08-dashboard.onrender.com", // Replace with your API's base URL
+ // baseURL: "https://pmv-si-2024-2-pe6-t2-g08-dashboard.onrender.com", // Replace with your API's base URL
   baseURL: 'http://localhost:4000',
   withCredentials: true,
   headers: {
@@ -11,14 +27,8 @@ const services = axios.create({
   },
 });
 
-/*services.interceptors.request.use(
-  async(config) =>{
-    config.headers.
-    return config;
-  }
-);*/
-
-const loginRequest = (email, password) => {
+const loginRequest = async (email, password) => {
+  const userCredential = await signInWithEmailAndPassword(auth, email, password);
   return services
     .post('/login', { email, password })
     .then((response) => {
@@ -109,5 +119,5 @@ const getAllEvents = () => {
     });
 };
 
-export { loginRequest, logoutRequest, getClientInfo, getUserInfo, getAllCampaigns, getAllCreatives, getAllEvents };
+export { loginRequest, logoutRequest, getClientInfo, getUserInfo, getAllCampaigns, getAllCreatives, getAllEvents, app };
 export default services;

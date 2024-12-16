@@ -1,16 +1,19 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
-import { Button, Paragraph } from 'react-native-paper';
+import { Button, Paragraph, Appbar } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 import { GiftedChat } from 'react-native-gifted-chat';
 
 const CreativeChatPage = ({ route }) => {
   const [messages, setMessages] = useState([]);
   const [creativeInfo, setInfo] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const { creativeData } = route.params;
     setInfo(creativeData);
 
+    //console.log(new Date(creativeData.evaluation[0].createAt).toDateString());
     const messagesData = creativeData.evaluation.map((item) => ({
       _id: item._id,
       text: item.text,
@@ -26,6 +29,10 @@ const CreativeChatPage = ({ route }) => {
 
   return (
     <View style={styles.container}>
+      <Appbar.Action
+        icon="arrow-left" // Icon from react-native-paper
+        onPress={() => navigation.goBack()}
+      />
       <Image source={{ uri: creativeInfo.mediaUrl }} style={styles.imageStyle} />
       <Paragraph style={styles.paragraph}>{creativeInfo.content || 'No description available'}</Paragraph>
       <GiftedChat

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
-import { Card, Title, Paragraph, Button } from 'react-native-paper';
+import { Card, Title, Paragraph, Button, Appbar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { getAllCreatives } from '../utils/services';
 
@@ -13,6 +13,7 @@ const CreativesPage = ({ route }) => {
     const fetchData = async () => {
       try {
         const { campaignId } = route.params;
+        console.log(campaignId)
         const data = await getAllCreatives(campaignId);
         setData(data);
       } catch (error) {
@@ -33,7 +34,7 @@ const CreativesPage = ({ route }) => {
       <Card style={styles.card}>
         <Card.Cover source={{ uri: item.mediaUrl }} />
         <Card.Content>
-          <Paragraph style={styles.paragraph}>{item.content.substring(0,50)+'...' || 'No description available'}</Paragraph>
+          <Paragraph style={styles.paragraph}>{item.content.substring(0, 50) + '...' || 'No description available'}</Paragraph>
           <Paragraph>Media: {item.mediaType}</Paragraph>
         </Card.Content>
         <Card.Actions>
@@ -61,6 +62,10 @@ const CreativesPage = ({ route }) => {
   }
   return (
     <View style={styles.FlatListContainer}>
+      <Appbar.Action
+        icon="arrow-left" // Icon from react-native-paper
+        onPress={() => navigation.goBack()}
+      />
       <Title style={styles.TitlePage}>Criativos</Title>
       <FlatList data={creatives} keyExtractor={(item) => item.id} renderItem={renderItem} contentContainerStyle={styles.listContainer} />
     </View>

@@ -31,7 +31,7 @@ const CampaignsPage = () => {
   // Render each card for the campaigns
   const renderItem = ({ item }) => {
     return (
-      <Card style={styles.card}>
+      <Card style={styles.card} key={item.id}>
         <Card.Content>
           <Title>{item.title}</Title>
           <Paragraph>{item.description || 'No description available'}</Paragraph>
